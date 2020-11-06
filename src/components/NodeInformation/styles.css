@@ -5,8 +5,7 @@
   justify-content: space-between;
   bottom: 0;
   right: 0;
-  width: 95%;
-  max-width: 820px;
+  width: 820px;
   height: auto;
   padding: 10px;
   margin: 20px;
@@ -27,4 +26,11 @@
 
 .information-container .node-property-value {
   font-size: 0.95rem;
+}
+
+@media screen and (max-width: 880px) {
+  .information-container {
+    left: 0;
+    width: auto;
+  }
 }
