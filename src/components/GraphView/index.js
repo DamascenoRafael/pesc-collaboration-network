@@ -18,25 +18,30 @@ const GraphView = ({ setNode }) => {
     (result, publication) => {
       if (!publication.authors.length > 1) return result;
 
-      const linksIds = publication.authors.flatMap((authorA, idx) =>
+      const authorsCombination = publication.authors.flatMap((authorA, idx) =>
         publication.authors.slice(idx + 1).map((authorB) => {
           let [nodeA, nodeB] =
             authorA.localeCompare(authorB) < 0
               ? [authorA, authorB]
               : [authorB, authorA];
-          let linkId = `${nodeA}-${nodeB}`;
-          networkLinkStatus[linkId] = 1;
-          return linkId;
+          return [nodeA, nodeB];
         })
       );
 
-      linksIds.forEach((id) => {
-        const link = result.find((link) => link.id === id);
+      authorsCombination.forEach(([nodeA, nodeB]) => {
+        let linkId = `${nodeA}-${nodeB}`;
+        networkLinkStatus[linkId] = 1;
+
+        const link = result.find((link) => link.id === linkId);
         if (link) {
-          link.publications.push(publication.id);
+          link.publications.push(publication);
         } else {
-          const [source, target] = id.split('-');
-          result.push({ id, source, target, publications: [publication.id] });
+          result.push({
+            id: linkId,
+            source: nodeA,
+            target: nodeB,
+            publications: [publication],
+          });
         }
       });
       return result;
