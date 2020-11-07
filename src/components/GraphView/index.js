@@ -98,6 +98,8 @@ const GraphView = ({ setNode }) => {
       .force('y', d3.forceY());
 
     networkLinks.forEach((link) => {
+      if (link.source.id === link.target.id) return;
+
       if (!link.source.degree) link.source.degree = 0;
       if (!link.target.degree) link.target.degree = 0;
 
