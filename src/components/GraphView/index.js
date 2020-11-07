@@ -12,8 +12,6 @@ const GraphView = ({ setNode }) => {
 
   var networkLinkStatus = {};
 
-  const networkNodes = colaborationNetwork.nodes;
-
   const networkLinks = colaborationNetwork.publications.reduce(
     (result, publication) => {
       if (!publication.authors.length > 1) return result;
@@ -47,6 +45,12 @@ const GraphView = ({ setNode }) => {
       return result;
     },
     []
+  );
+
+  const networkNodes = colaborationNetwork.nodes.filter((node) =>
+    networkLinks.some(
+      (link) => link.source === node.id || link.target === node.id
+    )
   );
 
   const isConnected = (nodeA, nodeB) => {
